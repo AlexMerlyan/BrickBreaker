@@ -93,6 +93,12 @@ public class GamePlay extends JPanel implements KeyListener, ActionListener {
                             mapGenerator.setBrickValue(0, i, j);
                             totalBricks--;
                             score++;
+
+                            if (ball.x + 19 <= brickX || ball.x + 1 >= brick.width + brick.x) {
+                                ballDirX = -ballDirX;
+                            } else {
+                                ballDirY = -ballDirY;
+                            }
                         }
                     }
                 }
