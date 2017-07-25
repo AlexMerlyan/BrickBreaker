@@ -13,6 +13,6 @@ public class Main {
         jFrame.setResizable(false);
         jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-        jFrame.add(new GamePlay());
+        jFrame.add(new GamePlay(7, 12));
     }
 }

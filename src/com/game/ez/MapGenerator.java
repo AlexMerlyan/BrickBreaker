@@ -5,7 +5,7 @@ import java.awt.*;
 /**
  * Created by Arizel on 25.07.2017.
  */
-public class MapGenerator {
+class MapGenerator {
     private int map[][];
     private int brickWidth;
     private int brickHeight;
