@@ -14,8 +14,6 @@ import java.util.Date;
 class GamePlay extends JPanel implements KeyListener, ActionListener {
     private boolean isPlay;
     private boolean isTest;
-    private int score;
-    private int totalBricks;
     private int delay;
     private int row;
     private int col;
@@ -34,8 +32,6 @@ class GamePlay extends JPanel implements KeyListener, ActionListener {
     public GamePlay(int row, int col) {
         this.row = row;
         this.col = col;
-        this.totalBricks = row * col;
-        System.out.println(totalBricks);
         this.delay = 8;
         this.playerX = 395;
         this.ballDirX = -1;
@@ -69,7 +65,7 @@ class GamePlay extends JPanel implements KeyListener, ActionListener {
 
         //score
         g.setFont(new Font("serif", Font.BOLD, 25));
-        g.drawString(String.valueOf(score), 590, 30);
+        g.drawString(String.valueOf(mapGenerator.getScore()), 590, 30);
 
         //paddle
         g.setColor(Color.GREEN);
@@ -84,12 +80,12 @@ class GamePlay extends JPanel implements KeyListener, ActionListener {
         g.setColor(Color.YELLOW);
         g.fillOval(ballPosX, ballPosY, 20, 20);
 
-        if (totalBricks <= 1) {
+        if (mapGenerator.getTotalBricks() <= 0) {
             ballDirX = 0;
             ballDirY = 0;
             isPlay = false;
             g.setColor(Color.cyan);
-            g.drawString("You WIN! Scores: " + score, 215, 300);
+            g.drawString("You WIN! Scores: " + mapGenerator.getScore(), 215, 300);
             g.drawString("Press Enter To Restart", 215, 350);
         }
 
@@ -98,7 +94,7 @@ class GamePlay extends JPanel implements KeyListener, ActionListener {
             ballDirY = 0;
             isPlay = false;
             g.setColor(Color.cyan);
-            g.drawString("GAME OVER! Scores: " + score, 215, 300);
+            g.drawString("GAME OVER! Scores: " + mapGenerator.getScore(), 215, 300);
             g.drawString("Press Enter To Restart", 215, 350);
         }
 
@@ -129,11 +125,6 @@ class GamePlay extends JPanel implements KeyListener, ActionListener {
                             if (ball.x + 19 <= brickX || ball.x + 1 >= brick.width + brick.x) {
                                 ballDirX = -ballDirX;
                                 mapGenerator.setBrickValue(0, i, j);
-                                checkAndChangeElementOfMap(i, j);
-//                                System.out.println("FROM X");
-//                                System.out.println("INTERSECTS: brick x = " + brick.x + ", brick y = " + brick.y
-//                                        + ", brick width = " + brick.width + ", brick height = " + brick.height);
-//                                System.out.println("BALL : " + ball);
                             } else if (ball.y - 1 >= brick.y && ball.x >= brick.x + brick.width - brick.width/2 && ball.x >= brick.x - brick.width/2) {
                                 ballDirY = -ballDirY;
                                 mapGenerator.setBrickValue(0, i, j);
@@ -145,14 +136,7 @@ class GamePlay extends JPanel implements KeyListener, ActionListener {
                             } else {
                                 ballDirY = -ballDirY;
                                 mapGenerator.setBrickValue(0, i, j);
-                                totalBricks--;
-                                score++;
-//                                System.out.println("FROM Y");
-//                                System.out.println("INTERSECTS: brick x = " + brick.x + ", brick y = " + brick.y
-//                                        + ", brick width = " + brick.width + ", brick height = " + brick.height);
-//                                System.out.println("BALL : " + ball);
                             }
-                            System.out.println(totalBricks);
                         }
                     }
                 }
@@ -184,8 +168,6 @@ class GamePlay extends JPanel implements KeyListener, ActionListener {
         if (e.getKeyCode() == KeyEvent.VK_ENTER) {
             if (!isPlay) {
                 isPlay = true;
-                totalBricks = row * col;
-                score = 0;
                 playerX = 310;
                 ballDirX = -1;
                 ballDirY = -2;
@@ -198,8 +180,6 @@ class GamePlay extends JPanel implements KeyListener, ActionListener {
         } else if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
             isTest = true;
             isPlay = true;
-            totalBricks = row * col;
-            score = 0;
             playerX = 310;
             ballDirX = -1;
             ballDirY = -2;
@@ -244,11 +224,6 @@ class GamePlay extends JPanel implements KeyListener, ActionListener {
         if (j + 1 < mapGenerator.getCountOfColumns()) {
             if (mapGenerator.getElementOfMap(i, j+1) > 0) {
                 mapGenerator.setBrickValue(0, i, j + 1);
-                totalBricks = totalBricks - 2;
-                score = score + 2;
-            } else {
-                totalBricks--;
-                score++;
             }
         }
     }
